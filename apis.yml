@@ -35,7 +35,7 @@ tags:
   - Open Protocol
 url: https://raw.githubusercontent.com/api-evangelist/at-protocol/refs/heads/main/apis.yml
 created: '2026-05-23'
-modified: '2026-05-23'
+modified: '2026-05-29'
 specificationVersion: '0.20'
 apis:
   - aid: at-protocol:atproto-xrpc
@@ -131,6 +131,8 @@ apis:
         url: https://atproto.com/specs/sync
       - type: Reference
         url: https://github.com/bluesky-social/indigo
+      - type: AsyncAPI
+        url: https://raw.githubusercontent.com/api-evangelist/at-protocol/refs/heads/main/asyncapi/at-protocol-asyncapi.yml
   - aid: at-protocol:bsky-appview
     name: Bluesky AppView API
     description: |

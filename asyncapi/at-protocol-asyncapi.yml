@@ -1,0 +1,500 @@
+asyncapi: 2.6.0
+info:
+  title: AT Protocol Firehose & Event Streams
+  version: 1.0.0
+  description: |
+    AsyncAPI definition for the AT Protocol event subscription surface. AT
+    Protocol defines streaming endpoints as Lexicon "subscription" types,
+    served over WebSocket using length-prefixed binary frames encoded with
+    DAG-CBOR. Each frame consists of a CBOR-encoded header (with frame
+    type and optional message type discriminator) followed by a CBOR-encoded
+    payload whose schema is defined by the referenced Lexicon `#type`.
+
+    This document covers the two protocol-level subscriptions defined under
+    `com.atproto.*`:
+
+      * `com.atproto.sync.subscribeRepos` — the repository firehose, exposed
+        by PDS hosts and aggregated by Relays. Emits `#commit`, `#sync`,
+        `#identity`, `#account`, and `#info` messages.
+      * `com.atproto.label.subscribeLabels` — the label firehose, exposed by
+        moderation services (labelers). Emits `#labels` and `#info` messages.
+
+    Schemas mirror the upstream Lexicon JSON files in
+    `bluesky-social/atproto/lexicons/`. Only documented Lexicon message types
+    are included; no message variants are invented.
+  contact:
+    name: API Evangelist
+    url: https://apievangelist.com
+    email: kin@apievangelist.com
+  license:
+    name: MIT
+    url: https://github.com/bluesky-social/atproto/blob/main/LICENSE
+  externalDocs:
+    description: AT Protocol sync specification
+    url: https://atproto.com/specs/sync
+
+defaultContentType: application/cbor
+
+servers:
+  relay:
+    url: bsky.network
+    protocol: wss
+    description: |
+      Bluesky-operated Relay. Aggregates `subscribeRepos` across the
+      federated network and re-broadcasts a unified firehose.
+  pds:
+    url: '{host}'
+    protocol: wss
+    description: |
+      Any Personal Data Server. PDS hosts implement `subscribeRepos` for
+      the repositories they host directly.
+    variables:
+      host:
+        default: pds.example.com
+        description: PDS hostname.
+  labeler:
+    url: '{host}'
+    protocol: wss
+    description: |
+      Any AT Protocol labeler / moderation service implementing
+      `com.atproto.label.subscribeLabels`.
+    variables:
+      host:
+        default: mod.bsky.app
+        description: Labeler hostname.
+
+channels:
+  /xrpc/com.atproto.sync.subscribeRepos:
+    description: |
+      Repository event stream (Firehose). Outputs repo commits with diff
+      data, sync events, and identity/account update events for all
+      repositories on the current server. Public, unauthenticated.
+
+      Each WebSocket frame is binary and consists of a DAG-CBOR header
+      object `{ op: 1, t: "#commit" | "#sync" | "#identity" | "#account" | "#info" }`
+      (or `{ op: -1 }` for an error frame with `{ error, message }` body)
+      followed by a DAG-CBOR-encoded payload matching the referenced type.
+    bindings:
+      ws:
+        bindingVersion: 0.1.0
+        query:
+          type: object
+          properties:
+            cursor:
+              type: integer
+              description: The last known event seq number to backfill from.
+    parameters: {}
+    subscribe:
+      operationId: subscribeRepos
+      summary: Subscribe to the repository firehose.
+      description: |
+        Connect over WebSocket to receive a continuous stream of repository
+        events. Consumers should persist `seq` and reconnect with `?cursor=<seq>`.
+        If the consumer falls too far behind, the server will close the
+        connection with a `ConsumerTooSlow` error. Requesting a cursor in
+        the future yields `FutureCursor`.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/RepoCommit'
+          - $ref: '#/components/messages/RepoSync'
+          - $ref: '#/components/messages/RepoIdentity'
+          - $ref: '#/components/messages/RepoAccount'
+          - $ref: '#/components/messages/RepoInfo'
+
+  /xrpc/com.atproto.label.subscribeLabels:
+    description: |
+      Stream of labels (and negations) emitted by a moderation service.
+      Public endpoint implemented by labelers; uses the same sequencing
+      scheme as the repo firehose.
+
+      Each WebSocket frame is binary DAG-CBOR with a header
+      `{ op: 1, t: "#labels" | "#info" }` followed by the payload.
+    bindings:
+      ws:
+        bindingVersion: 0.1.0
+        query:
+          type: object
+          properties:
+            cursor:
+              type: integer
+              description: The last known event seq number to backfill from.
+    parameters: {}
+    subscribe:
+      operationId: subscribeLabels
+      summary: Subscribe to the label firehose.
+      description: |
+        Connect over WebSocket to receive a stream of labels. Consumers
+        should persist `seq` and reconnect with `?cursor=<seq>`. Requesting
+        a cursor in the future yields `FutureCursor`.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/Labels'
+          - $ref: '#/components/messages/LabelInfo'
+
+components:
+  messages:
+    RepoCommit:
+      name: commit
+      title: '#commit'
+      summary: Repository commit (firehose).
+      contentType: application/cbor
+      description: |
+        Represents an update of repository state. Empty commits are allowed
+        (no record ops, but rev and signature update). Frame header carries
+        `t: "#commit"`.
+      payload:
+        $ref: '#/components/schemas/Commit'
+
+    RepoSync:
+      name: sync
+      title: '#sync'
+      summary: Repository sync event.
+      contentType: application/cbor
+      description: |
+        Updates the repo to a new state without necessarily including the
+        diff on the firehose. Used to recover from broken commit streams or
+        data loss. Frame header carries `t: "#sync"`.
+      payload:
+        $ref: '#/components/schemas/Sync'
+
+    RepoIdentity:
+      name: identity
+      title: '#identity'
+      summary: Account identity change.
+      contentType: application/cbor
+      description: |
+        Signals a change to an account's identity (handle, signing key, or
+        PDS endpoint). A prod for downstream services to refresh identity
+        caches. Frame header carries `t: "#identity"`.
+      payload:
+        $ref: '#/components/schemas/Identity'
+
+    RepoAccount:
+      name: account
+      title: '#account'
+      summary: Account status change on a host.
+      contentType: application/cbor
+      description: |
+        Represents a change to an account's status on the emitting host
+        (PDS or Relay). Frame header carries `t: "#account"`.
+      payload:
+        $ref: '#/components/schemas/Account'
+
+    RepoInfo:
+      name: info
+      title: '#info'
+      summary: Informational server message.
+      contentType: application/cbor
+      description: |
+        Server-emitted informational message. Frame header carries
+        `t: "#info"`. Known name value: `OutdatedCursor`.
+      payload:
+        $ref: '#/components/schemas/Info'
+
+    Labels:
+      name: labels
+      title: '#labels'
+      summary: Batch of labels (or negations).
+      contentType: application/cbor
+      description: |
+        A batch of labels emitted by a labeler. Frame header carries
+        `t: "#labels"`.
+      payload:
+        $ref: '#/components/schemas/LabelsPayload'
+
+    LabelInfo:
+      name: info
+      title: '#info'
+      summary: Informational labeler message.
+      contentType: application/cbor
+      description: |
+        Server-emitted informational message from a labeler. Frame header
+        carries `t: "#info"`. Known name value: `OutdatedCursor`.
+      payload:
+        $ref: '#/components/schemas/Info'
+
+  schemas:
+    Commit:
+      type: object
+      description: |
+        Repository commit message from `com.atproto.sync.subscribeRepos#commit`.
+      required:
+        - seq
+        - rebase
+        - tooBig
+        - repo
+        - commit
+        - rev
+        - since
+        - blocks
+        - ops
+        - blobs
+        - time
+      properties:
+        seq:
+          type: integer
+          description: The stream sequence number of this message.
+        rebase:
+          type: boolean
+          description: DEPRECATED -- unused.
+        tooBig:
+          type: boolean
+          description: |
+            DEPRECATED -- replaced by `#sync` event and data limits.
+            Indicates commit too large to include in stream.
+        repo:
+          type: string
+          format: did
+          description: The repo (DID) this event comes from.
+        commit:
+          $ref: '#/components/schemas/CIDLink'
+          description: Repo commit object CID.
+        rev:
+          type: string
+          format: tid
+          description: The rev (TID) of the emitted commit.
+        since:
+          type: string
+          format: tid
+          nullable: true
+          description: The rev of the last emitted commit from this repo (if any).
+        blocks:
+          type: string
+          format: byte
+          maxLength: 2000000
+          description: |
+            CAR file containing relevant blocks as a diff since the previous
+            repo state. Commit block CID must be the first entry in the CAR
+            header `roots` list.
+        ops:
+          type: array
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/RepoOp'
+          description: List of record mutations in this commit.
+        blobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CIDLink'
+          description: DEPRECATED -- will soon always be empty.
+        prevData:
+          $ref: '#/components/schemas/CIDLink'
+          description: |
+            Root CID of the MST tree for the previous commit. Effectively
+            required for the inductive firehose.
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of when this message was originally broadcast.
+
+    Sync:
+      type: object
+      description: |
+        Sync message from `com.atproto.sync.subscribeRepos#sync`.
+      required:
+        - seq
+        - did
+        - blocks
+        - rev
+        - time
+      properties:
+        seq:
+          type: integer
+          description: The stream sequence number of this message.
+        did:
+          type: string
+          format: did
+          description: The account this repo event corresponds to.
+        blocks:
+          type: string
+          format: byte
+          maxLength: 10000
+          description: |
+            CAR file containing the commit as a block. The CAR header must
+            include the commit block CID as the first root.
+        rev:
+          type: string
+          description: The rev of the commit; must match the commit object.
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of when this message was originally broadcast.
+
+    Identity:
+      type: object
+      description: |
+        Identity change message from `com.atproto.sync.subscribeRepos#identity`.
+      required:
+        - seq
+        - did
+        - time
+      properties:
+        seq:
+          type: integer
+        did:
+          type: string
+          format: did
+        time:
+          type: string
+          format: date-time
+        handle:
+          type: string
+          format: handle
+          description: |
+            Current handle for the account, or `handle.invalid` if
+            validation fails. Optional; may have been validated or
+            passed through from upstream.
+
+    Account:
+      type: object
+      description: |
+        Account status message from `com.atproto.sync.subscribeRepos#account`.
+        Reflects status at the emitting host, not necessarily the active PDS.
+      required:
+        - seq
+        - did
+        - time
+        - active
+      properties:
+        seq:
+          type: integer
+        did:
+          type: string
+          format: did
+        time:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+          description: |
+            Indicates the account has a repository fetchable from the
+            emitting host.
+        status:
+          type: string
+          description: |
+            If `active=false`, reason the account is not active.
+          enum:
+            - takendown
+            - suspended
+            - deleted
+            - deactivated
+            - desynchronized
+            - throttled
+
+    Info:
+      type: object
+      description: |
+        Informational server message used by both subscribeRepos and
+        subscribeLabels.
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          enum:
+            - OutdatedCursor
+        message:
+          type: string
+
+    RepoOp:
+      type: object
+      description: A single record mutation within a commit.
+      required:
+        - action
+        - path
+        - cid
+      properties:
+        action:
+          type: string
+          enum:
+            - create
+            - update
+            - delete
+        path:
+          type: string
+          description: Repository path of the affected record (collection/rkey).
+        cid:
+          allOf:
+            - $ref: '#/components/schemas/CIDLink'
+          nullable: true
+          description: |
+            For creates and updates, the new record CID. For deletions, null.
+        prev:
+          $ref: '#/components/schemas/CIDLink'
+          description: |
+            For updates and deletes, the previous record CID (required for
+            inductive firehose). Omitted for creations.
+
+    LabelsPayload:
+      type: object
+      description: |
+        Batch of labels from `com.atproto.label.subscribeLabels#labels`.
+      required:
+        - seq
+        - labels
+      properties:
+        seq:
+          type: integer
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+
+    Label:
+      type: object
+      description: |
+        A label as defined by `com.atproto.label.defs#label`. Metadata-only
+        schema reproduced for cross-spec readability.
+      required:
+        - src
+        - uri
+        - val
+        - cts
+      properties:
+        ver:
+          type: integer
+          description: Label version.
+        src:
+          type: string
+          format: did
+          description: DID of the actor who created this label.
+        uri:
+          type: string
+          format: uri
+          description: AT URI of the record, repository, or other resource being labeled.
+        cid:
+          type: string
+          description: |
+            Optional CID specifying the specific version of the labeled
+            resource.
+        val:
+          type: string
+          maxLength: 128
+          description: The short string name of the value or type of this label.
+        neg:
+          type: boolean
+          description: |
+            If true, this is a negation label, overwriting a previous label.
+        cts:
+          type: string
+          format: date-time
+          description: Timestamp when this label was created.
+        exp:
+          type: string
+          format: date-time
+          description: Timestamp at which this label expires (no longer applies).
+        sig:
+          type: string
+          format: byte
+          description: Signature of `dag-cbor` encoded label.
+
+    CIDLink:
+      type: object
+      description: |
+        Lexicon `cid-link`: a content-addressed reference. On the wire (CBOR)
+        this is a CID tag; in JSON representations it is rendered as
+        `{ "$link": "<cid-string>" }`.
+      properties:
+        $link:
+          type: string
+          description: CID string (base32-encoded multibase CIDv1).
