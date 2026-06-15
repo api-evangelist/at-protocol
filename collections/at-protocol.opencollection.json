@@ -1,0 +1,512 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Server",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new authentication session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.createSession",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new authentication session"
+        },
+        {
+          "info": {
+            "name": "Refresh a session using the refresh JWT",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.refreshSession",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Refresh a session using the refresh JWT"
+        },
+        {
+          "info": {
+            "name": "Terminate the current session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.deleteSession",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Terminate the current session"
+        },
+        {
+          "info": {
+            "name": "Register a new account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.createAccount",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a new account"
+        },
+        {
+          "info": {
+            "name": "Initiate a password reset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.requestPasswordReset",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a password reset"
+        },
+        {
+          "info": {
+            "name": "Complete a password reset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.server.resetPassword",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete a password reset"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Identity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resolve a handle to a DID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.identity.resolveHandle",
+            "params": [
+              {
+                "name": "handle",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Resolve a handle to a DID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Repo",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new record in a repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.createRecord",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new record in a repository"
+        },
+        {
+          "info": {
+            "name": "Get a specific record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.getRecord",
+            "params": [
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "collection",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "rkey",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a specific record"
+        },
+        {
+          "info": {
+            "name": "List records in a collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.listRecords",
+            "params": [
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "collection",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "reverse",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List records in a collection"
+        },
+        {
+          "info": {
+            "name": "Upload a blob to be referenced by future records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.uploadBlob",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload a blob to be referenced by future records"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Actor",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a Bluesky profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.getProfile",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a Bluesky profile"
+        },
+        {
+          "info": {
+            "name": "Get multiple Bluesky profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.getProfiles",
+            "params": [
+              {
+                "name": "actors",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get multiple Bluesky profiles"
+        },
+        {
+          "info": {
+            "name": "Search for actors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.searchActors",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search for actors"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Feed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the authenticated user's home feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getTimeline",
+            "params": [
+              {
+                "name": "algorithm",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the authenticated user's home feed"
+        },
+        {
+          "info": {
+            "name": "Get an actor's posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getAuthorFeed",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get an actor's posts"
+        },
+        {
+          "info": {
+            "name": "Get a post and its thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getPostThread",
+            "params": [
+              {
+                "name": "uri",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "depth",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parentHeight",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a post and its thread"
+        },
+        {
+          "info": {
+            "name": "Full-text search posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.searchPosts",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Full-text search posts"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Graph",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List an actor's followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.graph.getFollowers",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List an actor's followers"
+        },
+        {
+          "info": {
+            "name": "List who an actor follows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.graph.getFollows",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List who an actor follows"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
