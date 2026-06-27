@@ -178,7 +178,7 @@ apis:
         url: https://atproto.com/specs/did
       - type: Specification
         url: https://atproto.com/specs/handle
-      - type: Service
+      - type: Services
         url: https://plc.directory/
 features:
   - name: User-Owned Identity
@@ -215,7 +215,7 @@ common:
     url: https://atproto.com/
   - type: Documentation
     url: https://atproto.com/guides/overview
-  - type: Specifications
+  - type: Specification
     url: https://atproto.com/specs/atp
   - type: SDKs
     url: https://atproto.com/sdks
