@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/at-protocol-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: |-
+    AT Protocol XRPC bearer auth using the `accessJwt` returned by
+    `com.atproto.server.createSession`. The `refreshJwt` is used for
+    `com.atproto.server.refreshSession`.
+  sources:
+  - openapi/at-protocol-openapi.yml

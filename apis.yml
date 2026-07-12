@@ -211,6 +211,10 @@ integrations:
   - name: did:plc Directory
   - name: Buf Schema Registry (community)
 common:
+  - type: DomainSecurity
+    url: security/at-protocol-domain-security.yml
+  - type: Authentication
+    url: authentication/at-protocol-authentication.yml
   - type: Website
     url: https://atproto.com/
   - type: Documentation

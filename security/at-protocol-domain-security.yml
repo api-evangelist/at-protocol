@@ -1,0 +1,31 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: atproto.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 17 18:20:39 2026 GMT
+  hsts: false
+- host: bsky.network
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 10:23:29 2026 GMT
+  hsts: null
+- host: docs.bsky.app
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 24 02:04:29 2026 GMT
+  hsts: false
+domains:
+- domain: atproto.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: bsky.network
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false
