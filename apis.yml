@@ -211,6 +211,8 @@ integrations:
   - name: did:plc Directory
   - name: Buf Schema Registry (community)
 common:
+  - type: AgenticAccess
+    url: agentic-access/at-protocol-agentic-access.yml
   - type: DomainSecurity
     url: security/at-protocol-domain-security.yml
   - type: Authentication
