@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC Actor Repo API
+  version: '1.0'
+  description: 'XRPC is the AT Protocol''s HTTP-based RPC layer. All protocol interactions
+
+    are exposed as XRPC methods identified by an NSID and reached at
+
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+
+    methods are reached at the user''s PDS host (e.g. `https://bsky.social`).
+
+    '
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+- url: https://bsky.social
+  description: Bluesky-hosted PDS (com.atproto.* methods)
+- url: https://api.bsky.app
+  description: Bluesky AppView (app.bsky.* read methods)
+tags:
+- name: Repo
+  description: Repository record CRUD (com.atproto.repo.*)
+paths:
+  /xrpc/com.atproto.repo.createRecord:
+    post:
+      tags:
+      - Repo
+      summary: Create a new record in a repository
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - repo
+              - collection
+              - record
+              properties:
+                repo:
+                  type: string
+                  description: DID or handle of the repo
+                collection:
+                  type: string
+                  description: NSID of the record type
+                rkey:
+                  type: string
+                record:
+                  type: object
+                  description: Record content (Lexicon-typed)
+                validate:
+                  type: boolean
+                swapCommit:
+                  type: string
+      responses:
+        '200':
+          description: Record created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uri:
+                    type: string
+                  cid:
+                    type: string
+  /xrpc/com.atproto.repo.getRecord:
+    get:
+      tags:
+      - Repo
+      summary: Get a specific record
+      parameters:
+      - name: repo
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: rkey
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: cid
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record
+  /xrpc/com.atproto.repo.listRecords:
+    get:
+      tags:
+      - Repo
+      summary: List records in a collection
+      parameters:
+      - name: repo
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: collection
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          minimum: 1
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: reverse
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Records page
+  /xrpc/com.atproto.repo.uploadBlob:
+    post:
+      tags:
+      - Repo
+      summary: Upload a blob to be referenced by future records
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Blob ref returned in payload
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'AT Protocol XRPC bearer auth using the `accessJwt` returned by
+
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+
+        `com.atproto.server.refreshSession`.
+
+        '

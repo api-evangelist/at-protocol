@@ -1,0 +1,172 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC Actor Server API
+  version: '1.0'
+  description: 'XRPC is the AT Protocol''s HTTP-based RPC layer. All protocol interactions
+
+    are exposed as XRPC methods identified by an NSID and reached at
+
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+
+    methods are reached at the user''s PDS host (e.g. `https://bsky.social`).
+
+    '
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+- url: https://bsky.social
+  description: Bluesky-hosted PDS (com.atproto.* methods)
+- url: https://api.bsky.app
+  description: Bluesky AppView (app.bsky.* read methods)
+tags:
+- name: Server
+  description: Session and account management (com.atproto.server.*)
+paths:
+  /xrpc/com.atproto.server.createSession:
+    post:
+      tags:
+      - Server
+      summary: Create a new authentication session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - identifier
+              - password
+              properties:
+                identifier:
+                  type: string
+                  description: Handle or DID
+                password:
+                  type: string
+                authFactorToken:
+                  type: string
+      responses:
+        '200':
+          description: Session
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  did:
+                    type: string
+                  handle:
+                    type: string
+                  email:
+                    type: string
+                  accessJwt:
+                    type: string
+                  refreshJwt:
+                    type: string
+  /xrpc/com.atproto.server.refreshSession:
+    post:
+      tags:
+      - Server
+      summary: Refresh a session using the refresh JWT
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Refreshed session
+  /xrpc/com.atproto.server.deleteSession:
+    post:
+      tags:
+      - Server
+      summary: Terminate the current session
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+  /xrpc/com.atproto.server.createAccount:
+    post:
+      tags:
+      - Server
+      summary: Register a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - handle
+              properties:
+                email:
+                  type: string
+                  format: email
+                handle:
+                  type: string
+                password:
+                  type: string
+                inviteCode:
+                  type: string
+                did:
+                  type: string
+      responses:
+        '200':
+          description: Account created
+  /xrpc/com.atproto.server.requestPasswordReset:
+    post:
+      tags:
+      - Server
+      summary: Initiate a password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: OK
+  /xrpc/com.atproto.server.resetPassword:
+    post:
+      tags:
+      - Server
+      summary: Complete a password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - token
+              - password
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'AT Protocol XRPC bearer auth using the `accessJwt` returned by
+
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+
+        `com.atproto.server.refreshSession`.
+
+        '

@@ -1,0 +1,148 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC Actor Feed API
+  version: '1.0'
+  description: 'XRPC is the AT Protocol''s HTTP-based RPC layer. All protocol interactions
+
+    are exposed as XRPC methods identified by an NSID and reached at
+
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+
+    methods are reached at the user''s PDS host (e.g. `https://bsky.social`).
+
+    '
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+- url: https://bsky.social
+  description: Bluesky-hosted PDS (com.atproto.* methods)
+- url: https://api.bsky.app
+  description: Bluesky AppView (app.bsky.* read methods)
+tags:
+- name: Feed
+  description: Bluesky feeds, posts, and threads (app.bsky.feed.*)
+paths:
+  /xrpc/app.bsky.feed.getTimeline:
+    get:
+      tags:
+      - Feed
+      summary: Get the authenticated user's home feed
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: algorithm
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          minimum: 1
+          maximum: 100
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Feed view
+  /xrpc/app.bsky.feed.getAuthorFeed:
+    get:
+      tags:
+      - Feed
+      summary: Get an actor's posts
+      parameters:
+      - name: actor
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      - name: filter
+        in: query
+        schema:
+          type: string
+          enum:
+          - posts_with_replies
+          - posts_no_replies
+          - posts_with_media
+          - posts_and_author_threads
+      responses:
+        '200':
+          description: Author feed
+  /xrpc/app.bsky.feed.getPostThread:
+    get:
+      tags:
+      - Feed
+      summary: Get a post and its thread
+      parameters:
+      - name: uri
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: depth
+        in: query
+        schema:
+          type: integer
+          default: 6
+          maximum: 1000
+      - name: parentHeight
+        in: query
+        schema:
+          type: integer
+          default: 80
+      responses:
+        '200':
+          description: Thread view
+  /xrpc/app.bsky.feed.searchPosts:
+    get:
+      tags:
+      - Feed
+      summary: Full-text search posts
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 25
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Search results
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'AT Protocol XRPC bearer auth using the `accessJwt` returned by
+
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+
+        `com.atproto.server.refreshSession`.
+
+        '

@@ -1,0 +1,96 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC Actor API
+  version: '1.0'
+  description: 'XRPC is the AT Protocol''s HTTP-based RPC layer. All protocol interactions
+
+    are exposed as XRPC methods identified by an NSID and reached at
+
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+
+    methods are reached at the user''s PDS host (e.g. `https://bsky.social`).
+
+    '
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+- url: https://bsky.social
+  description: Bluesky-hosted PDS (com.atproto.* methods)
+- url: https://api.bsky.app
+  description: Bluesky AppView (app.bsky.* read methods)
+tags:
+- name: Actor
+  description: Bluesky actor profiles (app.bsky.actor.*)
+paths:
+  /xrpc/app.bsky.actor.getProfile:
+    get:
+      tags:
+      - Actor
+      summary: Get a Bluesky profile
+      parameters:
+      - name: actor
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Profile view
+  /xrpc/app.bsky.actor.getProfiles:
+    get:
+      tags:
+      - Actor
+      summary: Get multiple Bluesky profiles
+      parameters:
+      - name: actors
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 25
+      responses:
+        '200':
+          description: Profile views
+  /xrpc/app.bsky.actor.searchActors:
+    get:
+      tags:
+      - Actor
+      summary: Search for actors
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 25
+      - name: cursor
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Search results
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'AT Protocol XRPC bearer auth using the `accessJwt` returned by
+
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+
+        `com.atproto.server.refreshSession`.
+
+        '

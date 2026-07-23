@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC Actor Identity API
+  version: '1.0'
+  description: 'XRPC is the AT Protocol''s HTTP-based RPC layer. All protocol interactions
+
+    are exposed as XRPC methods identified by an NSID and reached at
+
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+
+    methods are reached at the user''s PDS host (e.g. `https://bsky.social`).
+
+    '
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+- url: https://bsky.social
+  description: Bluesky-hosted PDS (com.atproto.* methods)
+- url: https://api.bsky.app
+  description: Bluesky AppView (app.bsky.* read methods)
+tags:
+- name: Identity
+  description: DID and handle resolution (com.atproto.identity.*)
+paths:
+  /xrpc/com.atproto.identity.resolveHandle:
+    get:
+      tags:
+      - Identity
+      summary: Resolve a handle to a DID
+      parameters:
+      - name: handle
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: DID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  did:
+                    type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'AT Protocol XRPC bearer auth using the `accessJwt` returned by
+
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+
+        `com.atproto.server.refreshSession`.
+
+        '
