@@ -16,9 +16,22 @@ description: |
   C#/.NET, Ruby, PHP, and more, and the full lexicon, network topology, and
   reference implementations are open source.
 type: Index
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Provider
 access: Public
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/at-protocol.png
 tags:
   - AT Protocol
   - atproto
@@ -38,148 +51,237 @@ created: '2026-05-23'
 modified: '2026-05-29'
 specificationVersion: '0.20'
 apis:
-  - aid: at-protocol:atproto-xrpc
-    name: AT Protocol XRPC API
-    description: |
-      XRPC is the AT Protocol's HTTP-based remote procedure call layer. All
-      protocol interactions — querying records, writing records, subscribing
-      to streams, resolving identity, moderating content — are exposed as
-      XRPC methods defined in Lexicon schemas. PDS, Relay, and AppView
-      services all speak XRPC, so the same client library can be pointed at
-      different network roles. The HTTP surface uses /xrpc/{nsid} paths and
-      JSON request/response bodies (with optional CBOR for record content).
-    humanURL: https://atproto.com/specs/xrpc
-    baseURL: https://atproto.com/xrpc
-    tags:
-      - XRPC
-      - RPC
-      - HTTP
-      - JSON
-      - Protocol Surface
-    properties:
-      - type: Specification
-        url: https://atproto.com/specs/xrpc
-      - type: Documentation
-        url: https://atproto.com/guides/glossary
-      - type: GitHubOrganization
-        url: https://github.com/bluesky-social
-  - aid: at-protocol:lexicon
-    name: AT Protocol Lexicon Schemas
-    description: |
-      Lexicon is the schema definition language for AT Protocol. Every
-      record type, XRPC method, and event subscription on the network is
-      described by a Lexicon document, which acts as both contract and code
-      generation source for client libraries. Bluesky publishes the
-      app.bsky.* and com.atproto.* lexicons that power the reference
-      Bluesky application; third parties define their own NSIDs to ship
-      independent applications on the same network.
-    humanURL: https://atproto.com/guides/lexicon
-    baseURL: https://atproto.com/lexicons
-    tags:
-      - Lexicon
-      - Schema
-      - NSID
-      - Record Types
-    properties:
-      - type: Documentation
-        url: https://atproto.com/guides/lexicon
-      - type: Specification
-        url: https://atproto.com/specs/lexicon
-      - type: Repository
-        url: https://github.com/bluesky-social/atproto/tree/main/lexicons
-  - aid: at-protocol:pds-api
-    name: Personal Data Server (PDS) API
-    description: |
-      The PDS hosts a user's repository of signed records and exposes the
-      com.atproto.* XRPC methods for account creation, authentication,
-      record CRUD, blob upload, and repository sync. A PDS is the home
-      server for an actor; users can migrate their account (and full
-      record history) between PDS hosts while keeping the same DID.
-    humanURL: https://atproto.com/guides/self-hosting
-    baseURL: https://atproto.com/xrpc/com.atproto
-    tags:
-      - PDS
-      - Personal Data Server
-      - Repository
-      - Sync
-      - Self-Hosting
-    properties:
-      - type: Documentation
-        url: https://atproto.com/guides/self-hosting
-      - type: Specification
-        url: https://atproto.com/specs/repository
-      - type: Reference
-        url: https://github.com/bluesky-social/atproto/tree/main/packages/pds
-  - aid: at-protocol:relay-firehose
-    name: AT Protocol Relay & Firehose
-    description: |
-      The Relay aggregates the com.atproto.sync.subscribeRepos firehose
-      across PDS hosts and re-broadcasts the combined event stream over
-      WebSocket. AppViews and indexers subscribe to a Relay to get a
-      near-real-time view of every public record written on the network
-      without polling individual PDS instances.
-    humanURL: https://atproto.com/guides/glossary
-    baseURL: wss://bsky.network
-    tags:
-      - Relay
-      - Firehose
-      - WebSocket
-      - Streaming
-      - Sync
-    properties:
-      - type: Specification
-        url: https://atproto.com/specs/sync
-      - type: Reference
-        url: https://github.com/bluesky-social/indigo
-      - type: AsyncAPI
-        url: https://raw.githubusercontent.com/api-evangelist/at-protocol/refs/heads/main/asyncapi/at-protocol-asyncapi.yml
-  - aid: at-protocol:bsky-appview
-    name: Bluesky AppView API
-    description: |
-      The Bluesky AppView indexes the firehose and exposes the app.bsky.*
-      XRPC methods that the Bluesky client (and any compatible client)
-      uses to render timelines, threads, profiles, notifications, search,
-      and graph data. It is the reference AppView for the app.bsky lexicon
-      family and the primary read API for Bluesky applications.
-    humanURL: https://docs.bsky.app/
-    baseURL: https://public.api.bsky.app/xrpc
-    tags:
-      - AppView
-      - Bluesky
-      - Timeline
-      - Feed
-      - Graph
-      - Notifications
-    properties:
-      - type: Documentation
-        url: https://docs.bsky.app/
-      - type: APIReference
-        url: https://docs.bsky.app/docs/category/http-reference
-      - type: Lexicons
-        url: https://github.com/bluesky-social/atproto/tree/main/lexicons/app/bsky
-  - aid: at-protocol:identity-did
-    name: AT Protocol Identity (DID & Handles)
-    description: |
-      Identity in AT Protocol is anchored in DIDs (did:plc or did:web),
-      with human-readable handles resolved through DNS TXT records or
-      well-known HTTP endpoints. The protocol specifies how DIDs map to
-      PDS endpoints, signing keys, and rotation, allowing users to keep
-      a stable identity while changing handles or migrating providers.
-    humanURL: https://atproto.com/specs/did
-    baseURL: https://plc.directory
-    tags:
-      - Identity
-      - DID
-      - did:plc
-      - Handles
-      - DNS
-    properties:
-      - type: Specification
-        url: https://atproto.com/specs/did
-      - type: Specification
-        url: https://atproto.com/specs/handle
-      - type: Services
-        url: https://plc.directory/
+- aid: at-protocol:atproto-xrpc
+  name: AT Protocol XRPC API
+  description: >
+    XRPC is the AT Protocol's HTTP-based remote procedure call layer. All
+
+    protocol interactions — querying records, writing records, subscribing
+
+    to streams, resolving identity, moderating content — are exposed as
+
+    XRPC methods defined in Lexicon schemas. PDS, Relay, and AppView
+
+    services all speak XRPC, so the same client library can be pointed at
+
+    different network roles. The HTTP surface uses /xrpc/{nsid} paths and
+
+    JSON request/response bodies (with optional CBOR for record content).
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - XRPC
+  - RPC
+  - HTTP
+  - JSON
+  - Protocol Surface
+  properties:
+  - type: Specification
+    url: https://atproto.com/specs/xrpc
+  - type: Documentation
+    url: https://atproto.com/guides/glossary
+  - type: GitHubOrganization
+    url: https://github.com/bluesky-social
+- aid: at-protocol:lexicon
+  name: AT Protocol Lexicon Schemas
+  description: >
+    Lexicon is the schema definition language for AT Protocol. Every
+
+    record type, XRPC method, and event subscription on the network is
+
+    described by a Lexicon document, which acts as both contract and code
+
+    generation source for client libraries. Bluesky publishes the
+
+    app.bsky.* and com.atproto.* lexicons that power the reference
+
+    Bluesky application; third parties define their own NSIDs to ship
+
+    independent applications on the same network.
+  humanURL: https://atproto.com/guides/lexicon
+  baseURL: https://atproto.com/lexicons
+  tags:
+  - Lexicon
+  - Schema
+  - NSID
+  - Record Types
+  properties:
+  - type: Documentation
+    url: https://atproto.com/guides/lexicon
+  - type: Specification
+    url: https://atproto.com/specs/lexicon
+  - type: Repository
+    url: https://github.com/bluesky-social/atproto/tree/main/lexicons
+- aid: at-protocol:pds-api
+  name: Personal Data Server (PDS) API
+  description: >
+    The PDS hosts a user's repository of signed records and exposes the
+
+    com.atproto.* XRPC methods for account creation, authentication,
+
+    record CRUD, blob upload, and repository sync. A PDS is the home
+
+    server for an actor; users can migrate their account (and full
+
+    record history) between PDS hosts while keeping the same DID.
+  humanURL: https://atproto.com/guides/self-hosting
+  baseURL: https://atproto.com/xrpc/com.atproto
+  tags:
+  - PDS
+  - Personal Data Server
+  - Repository
+  - Sync
+  - Self-Hosting
+  properties:
+  - type: Documentation
+    url: https://atproto.com/guides/self-hosting
+  - type: Specification
+    url: https://atproto.com/specs/repository
+  - type: Reference
+    url: https://github.com/bluesky-social/atproto/tree/main/packages/pds
+- aid: at-protocol:relay-firehose
+  name: AT Protocol Relay & Firehose
+  description: >
+    The Relay aggregates the com.atproto.sync.subscribeRepos firehose
+
+    across PDS hosts and re-broadcasts the combined event stream over
+
+    WebSocket. AppViews and indexers subscribe to a Relay to get a
+
+    near-real-time view of every public record written on the network
+
+    without polling individual PDS instances.
+  humanURL: https://atproto.com/guides/glossary
+  baseURL: wss://bsky.network
+  tags:
+  - Relay
+  - Firehose
+  - WebSocket
+  - Streaming
+  - Sync
+  properties:
+  - type: Specification
+    url: https://atproto.com/specs/sync
+  - type: Reference
+    url: https://github.com/bluesky-social/indigo
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/at-protocol/refs/heads/main/asyncapi/at-protocol-asyncapi.yml
+- aid: at-protocol:bsky-appview
+  name: Bluesky AppView API
+  description: >
+    The Bluesky AppView indexes the firehose and exposes the app.bsky.*
+
+    XRPC methods that the Bluesky client (and any compatible client)
+
+    uses to render timelines, threads, profiles, notifications, search,
+
+    and graph data. It is the reference AppView for the app.bsky lexicon
+
+    family and the primary read API for Bluesky applications.
+  humanURL: https://docs.bsky.app/
+  baseURL: https://public.api.bsky.app/xrpc
+  tags:
+  - AppView
+  - Bluesky
+  - Timeline
+  - Feed
+  - Graph
+  - Notifications
+  properties:
+  - type: Documentation
+    url: https://docs.bsky.app/
+  - type: APIReference
+    url: https://docs.bsky.app/docs/category/http-reference
+  - type: Lexicons
+    url: https://github.com/bluesky-social/atproto/tree/main/lexicons/app/bsky
+- aid: at-protocol:identity-did
+  name: AT Protocol Identity (DID & Handles)
+  description: >
+    Identity in AT Protocol is anchored in DIDs (did:plc or did:web),
+
+    with human-readable handles resolved through DNS TXT records or
+
+    well-known HTTP endpoints. The protocol specifies how DIDs map to
+
+    PDS endpoints, signing keys, and rotation, allowing users to keep
+
+    a stable identity while changing handles or migrating providers.
+  humanURL: https://atproto.com/specs/did
+  baseURL: https://plc.directory
+  tags:
+  - Identity
+  - DID
+  - did:plc
+  - Handles
+  - DNS
+  properties:
+  - type: Specification
+    url: https://atproto.com/specs/did
+  - type: Specification
+    url: https://atproto.com/specs/handle
+  - type: Services
+    url: https://plc.directory/
+- aid: at-protocol:at-protocol-actor-api
+  name: AT Protocol Actor API
+  description: Bluesky actor profiles (app.bsky.actor.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Actor
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-actor-api-openapi.yml
+- aid: at-protocol:at-protocol-feed-api
+  name: AT Protocol Feed API
+  description: Bluesky feeds, posts, and threads (app.bsky.feed.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Feed
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-feed-api-openapi.yml
+- aid: at-protocol:at-protocol-graph-api
+  name: AT Protocol Graph API
+  description: Follow, mute, and block graph (app.bsky.graph.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Graph
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-graph-api-openapi.yml
+- aid: at-protocol:at-protocol-identity-api
+  name: AT Protocol Identity API
+  description: DID and handle resolution (com.atproto.identity.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-identity-api-openapi.yml
+- aid: at-protocol:at-protocol-repo-api
+  name: AT Protocol Repo API
+  description: Repository record CRUD (com.atproto.repo.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Repo
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-repo-api-openapi.yml
+- aid: at-protocol:at-protocol-server-api
+  name: AT Protocol Server API
+  description: Session and account management (com.atproto.server.*)
+  humanURL: https://atproto.com/specs/xrpc
+  baseURL: https://atproto.com/xrpc
+  tags:
+  - Server
+  properties:
+  - type: OpenAPI
+    url: openapi/at-protocol-server-api-openapi.yml
 features:
   - name: User-Owned Identity
     description: DIDs and handles let users keep a stable identity across PDS hosts and applications.
