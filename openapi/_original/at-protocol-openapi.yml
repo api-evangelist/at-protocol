@@ -1,0 +1,315 @@
+openapi: 3.1.0
+info:
+  title: AT Protocol XRPC API
+  version: "1.0"
+  description: |
+    XRPC is the AT Protocol's HTTP-based RPC layer. All protocol interactions
+    are exposed as XRPC methods identified by an NSID and reached at
+    `/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.
+    Bluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted
+    methods are reached at the user's PDS host (e.g. `https://bsky.social`).
+  contact:
+    name: AT Protocol
+    url: https://atproto.com
+  license:
+    name: MIT
+servers:
+  - url: https://bsky.social
+    description: Bluesky-hosted PDS (com.atproto.* methods)
+  - url: https://api.bsky.app
+    description: Bluesky AppView (app.bsky.* read methods)
+tags:
+  - name: Server
+    description: Session and account management (com.atproto.server.*)
+  - name: Identity
+    description: DID and handle resolution (com.atproto.identity.*)
+  - name: Repo
+    description: Repository record CRUD (com.atproto.repo.*)
+  - name: Actor
+    description: Bluesky actor profiles (app.bsky.actor.*)
+  - name: Feed
+    description: Bluesky feeds, posts, and threads (app.bsky.feed.*)
+  - name: Graph
+    description: Follow, mute, and block graph (app.bsky.graph.*)
+paths:
+  /xrpc/com.atproto.server.createSession:
+    post:
+      tags: [Server]
+      summary: Create a new authentication session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier: { type: string, description: Handle or DID }
+                password:   { type: string }
+                authFactorToken: { type: string }
+      responses:
+        "200":
+          description: Session
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  did:           { type: string }
+                  handle:        { type: string }
+                  email:         { type: string }
+                  accessJwt:     { type: string }
+                  refreshJwt:    { type: string }
+  /xrpc/com.atproto.server.refreshSession:
+    post:
+      tags: [Server]
+      summary: Refresh a session using the refresh JWT
+      security:
+        - bearerAuth: []
+      responses:
+        "200": { description: Refreshed session }
+  /xrpc/com.atproto.server.deleteSession:
+    post:
+      tags: [Server]
+      summary: Terminate the current session
+      security:
+        - bearerAuth: []
+      responses:
+        "200": { description: OK }
+  /xrpc/com.atproto.server.createAccount:
+    post:
+      tags: [Server]
+      summary: Register a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [handle]
+              properties:
+                email:       { type: string, format: email }
+                handle:      { type: string }
+                password:    { type: string }
+                inviteCode:  { type: string }
+                did:         { type: string }
+      responses:
+        "200": { description: Account created }
+  /xrpc/com.atproto.server.requestPasswordReset:
+    post:
+      tags: [Server]
+      summary: Initiate a password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        "200": { description: OK }
+  /xrpc/com.atproto.server.resetPassword:
+    post:
+      tags: [Server]
+      summary: Complete a password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, password]
+              properties:
+                token:    { type: string }
+                password: { type: string }
+      responses:
+        "200": { description: OK }
+
+  /xrpc/com.atproto.identity.resolveHandle:
+    get:
+      tags: [Identity]
+      summary: Resolve a handle to a DID
+      parameters:
+        - { name: handle, in: query, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: DID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  did: { type: string }
+
+  /xrpc/com.atproto.repo.createRecord:
+    post:
+      tags: [Repo]
+      summary: Create a new record in a repository
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [repo, collection, record]
+              properties:
+                repo:       { type: string, description: DID or handle of the repo }
+                collection: { type: string, description: NSID of the record type }
+                rkey:       { type: string }
+                record:     { type: object, description: Record content (Lexicon-typed) }
+                validate:   { type: boolean }
+                swapCommit: { type: string }
+      responses:
+        "200":
+          description: Record created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uri: { type: string }
+                  cid: { type: string }
+  /xrpc/com.atproto.repo.getRecord:
+    get:
+      tags: [Repo]
+      summary: Get a specific record
+      parameters:
+        - { name: repo,       in: query, required: true, schema: { type: string } }
+        - { name: collection, in: query, required: true, schema: { type: string } }
+        - { name: rkey,       in: query, required: true, schema: { type: string } }
+        - { name: cid,        in: query, schema: { type: string } }
+      responses:
+        "200": { description: Record }
+  /xrpc/com.atproto.repo.listRecords:
+    get:
+      tags: [Repo]
+      summary: List records in a collection
+      parameters:
+        - { name: repo,       in: query, required: true, schema: { type: string } }
+        - { name: collection, in: query, required: true, schema: { type: string } }
+        - { name: limit,      in: query, schema: { type: integer, default: 50, minimum: 1, maximum: 100 } }
+        - { name: cursor,     in: query, schema: { type: string } }
+        - { name: reverse,    in: query, schema: { type: boolean } }
+      responses:
+        "200": { description: Records page }
+  /xrpc/com.atproto.repo.uploadBlob:
+    post:
+      tags: [Repo]
+      summary: Upload a blob to be referenced by future records
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          "*/*":
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200": { description: Blob ref returned in payload }
+
+  /xrpc/app.bsky.actor.getProfile:
+    get:
+      tags: [Actor]
+      summary: Get a Bluesky profile
+      parameters:
+        - { name: actor, in: query, required: true, schema: { type: string } }
+      responses:
+        "200": { description: Profile view }
+  /xrpc/app.bsky.actor.getProfiles:
+    get:
+      tags: [Actor]
+      summary: Get multiple Bluesky profiles
+      parameters:
+        - { name: actors, in: query, required: true, schema: { type: array, items: { type: string }, minItems: 1, maxItems: 25 } }
+      responses:
+        "200": { description: Profile views }
+  /xrpc/app.bsky.actor.searchActors:
+    get:
+      tags: [Actor]
+      summary: Search for actors
+      parameters:
+        - { name: q,      in: query, schema: { type: string } }
+        - { name: limit,  in: query, schema: { type: integer, default: 25 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200": { description: Search results }
+
+  /xrpc/app.bsky.feed.getTimeline:
+    get:
+      tags: [Feed]
+      summary: Get the authenticated user's home feed
+      security:
+        - bearerAuth: []
+      parameters:
+        - { name: algorithm, in: query, schema: { type: string } }
+        - { name: limit,     in: query, schema: { type: integer, default: 50, minimum: 1, maximum: 100 } }
+        - { name: cursor,    in: query, schema: { type: string } }
+      responses:
+        "200": { description: Feed view }
+  /xrpc/app.bsky.feed.getAuthorFeed:
+    get:
+      tags: [Feed]
+      summary: Get an actor's posts
+      parameters:
+        - { name: actor,  in: query, required: true, schema: { type: string } }
+        - { name: limit,  in: query, schema: { type: integer, default: 50 } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: filter, in: query, schema: { type: string, enum: [posts_with_replies, posts_no_replies, posts_with_media, posts_and_author_threads] } }
+      responses:
+        "200": { description: Author feed }
+  /xrpc/app.bsky.feed.getPostThread:
+    get:
+      tags: [Feed]
+      summary: Get a post and its thread
+      parameters:
+        - { name: uri,            in: query, required: true, schema: { type: string } }
+        - { name: depth,          in: query, schema: { type: integer, default: 6, maximum: 1000 } }
+        - { name: parentHeight,   in: query, schema: { type: integer, default: 80 } }
+      responses:
+        "200": { description: Thread view }
+  /xrpc/app.bsky.feed.searchPosts:
+    get:
+      tags: [Feed]
+      summary: Full-text search posts
+      parameters:
+        - { name: q,      in: query, required: true, schema: { type: string } }
+        - { name: limit,  in: query, schema: { type: integer, default: 25 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200": { description: Search results }
+
+  /xrpc/app.bsky.graph.getFollowers:
+    get:
+      tags: [Graph]
+      summary: List an actor's followers
+      parameters:
+        - { name: actor,  in: query, required: true, schema: { type: string } }
+        - { name: limit,  in: query, schema: { type: integer, default: 50 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200": { description: Followers list }
+  /xrpc/app.bsky.graph.getFollows:
+    get:
+      tags: [Graph]
+      summary: List who an actor follows
+      parameters:
+        - { name: actor,  in: query, required: true, schema: { type: string } }
+        - { name: limit,  in: query, schema: { type: integer, default: 50 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200": { description: Follows list }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        AT Protocol XRPC bearer auth using the `accessJwt` returned by
+        `com.atproto.server.createSession`. The `refreshJwt` is used for
+        `com.atproto.server.refreshSession`.

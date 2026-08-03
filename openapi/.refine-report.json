@@ -1,0 +1,24 @@
+{
+  "provider": "at-protocol",
+  "sources": [
+    "at-protocol-actor-api-openapi.yml",
+    "at-protocol-feed-api-openapi.yml",
+    "at-protocol-graph-api-openapi.yml",
+    "at-protocol-identity-api-openapi.yml",
+    "at-protocol-repo-api-openapi.yml",
+    "at-protocol-server-api-openapi.yml"
+  ],
+  "outputs": [
+    "at-protocol-actor-api-openapi.yml",
+    "at-protocol-feed-api-openapi.yml",
+    "at-protocol-graph-api-openapi.yml",
+    "at-protocol-identity-api-openapi.yml",
+    "at-protocol-repo-api-openapi.yml",
+    "at-protocol-server-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
