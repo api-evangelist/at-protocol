@@ -313,6 +313,14 @@ integrations:
   - name: did:plc Directory
   - name: Buf Schema Registry (community)
 common:
+  - type: IssueTracker
+    url: https://github.com/bluesky-social/atproto/issues
+  - type: Releases
+    url: https://github.com/bluesky-social/atproto/releases
+  - type: SecurityPolicy
+    url: https://github.com/bluesky-social/atproto/blob/main/SECURITY.md
+  - type: ContributionGuide
+    url: https://github.com/bluesky-social/atproto/blob/main/CONTRIBUTING.md
   - type: AgenticAccess
     url: agentic-access/at-protocol-agentic-access.yml
   - type: DomainSecurity
