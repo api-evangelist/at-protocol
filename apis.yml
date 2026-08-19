@@ -49,7 +49,7 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/at-protocol/refs/heads/main/apis.yml
 created: '2026-05-23'
 modified: '2026-05-29'
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 apis:
 - aid: at-protocol:atproto-xrpc
   name: AT Protocol XRPC API
