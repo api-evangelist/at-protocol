@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC Actor Feed API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Feed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the authenticated user's home feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getTimeline",
+            "params": [
+              {
+                "name": "algorithm",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the authenticated user's home feed"
+        },
+        {
+          "info": {
+            "name": "Get an actor's posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getAuthorFeed",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get an actor's posts"
+        },
+        {
+          "info": {
+            "name": "Get a post and its thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.getPostThread",
+            "params": [
+              {
+                "name": "uri",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "depth",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parentHeight",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a post and its thread"
+        },
+        {
+          "info": {
+            "name": "Full-text search posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.feed.searchPosts",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Full-text search posts"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

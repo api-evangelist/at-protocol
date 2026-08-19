@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC Actor Graph API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Graph",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List an actor's followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.graph.getFollowers",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List an actor's followers"
+        },
+        {
+          "info": {
+            "name": "List who an actor follows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.graph.getFollows",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List who an actor follows"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

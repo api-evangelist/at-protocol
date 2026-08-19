@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC Actor Identity API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Identity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resolve a handle to a DID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.identity.resolveHandle",
+            "params": [
+              {
+                "name": "handle",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Resolve a handle to a DID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

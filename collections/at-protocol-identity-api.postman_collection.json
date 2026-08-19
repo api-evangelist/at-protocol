@@ -1,0 +1,113 @@
+{
+  "item": [
+    {
+      "id": "c1e599b6-6e3e-4c83-b455-f09304b6cd18",
+      "name": "Identity",
+      "description": {
+        "content": "DID and handle resolution (com.atproto.identity.*)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4c87b007-5c36-4443-bf8a-425a6680bd51",
+          "name": "Resolve a handle to a DID",
+          "request": {
+            "name": "Resolve a handle to a DID",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "com.atproto.identity.resolveHandle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "handle",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "67249a41-6bd7-4dea-97db-d432ef3d5c76",
+              "name": "DID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "com.atproto.identity.resolveHandle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "handle",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"did\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://bsky.social",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3113e082-faa3-45db-9836-b1b84dae0ad1",
+    "name": "AT Protocol XRPC Actor Identity API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "XRPC is the AT Protocol's HTTP-based RPC layer. All protocol interactions\nare exposed as XRPC methods identified by an NSID and reached at\n`/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.\nBluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted\nmethods are reached at the user's PDS host (e.g. `https://bsky.social`).\n\n\nContact Support:\n Name: AT Protocol",
+      "type": "text/plain"
+    }
+  }
+}

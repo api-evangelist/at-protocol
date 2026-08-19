@@ -1,0 +1,206 @@
+{
+  "item": [
+    {
+      "id": "6b30566e-80c0-446f-a0b1-195fee96eb87",
+      "name": "Graph",
+      "description": {
+        "content": "Follow, mute, and block graph (app.bsky.graph.*)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1b0b7a88-b2a3-4f6d-bfc0-1dfefe4542f1",
+          "name": "List an actor's followers",
+          "request": {
+            "name": "List an actor's followers",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.graph.getFollowers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "actor",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0c0ef7dc-4fef-4ac7-b0d0-6e545f25d3ab",
+              "name": "Followers list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.graph.getFollowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "actor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "49ad234a-3067-4796-b57d-6ef18e9b05ae",
+          "name": "List who an actor follows",
+          "request": {
+            "name": "List who an actor follows",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.graph.getFollows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "actor",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4b967bde-95cc-441c-9c92-1c8eaaceb6ac",
+              "name": "Follows list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.graph.getFollows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "actor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://bsky.social",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4ce7eeec-6d12-4064-bbcd-f8875cb0549c",
+    "name": "AT Protocol XRPC Actor Graph API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "XRPC is the AT Protocol's HTTP-based RPC layer. All protocol interactions\nare exposed as XRPC methods identified by an NSID and reached at\n`/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.\nBluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted\nmethods are reached at the user's PDS host (e.g. `https://bsky.social`).\n\n\nContact Support:\n Name: AT Protocol",
+      "type": "text/plain"
+    }
+  }
+}

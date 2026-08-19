@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC Actor API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Actor",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a Bluesky profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.getProfile",
+            "params": [
+              {
+                "name": "actor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a Bluesky profile"
+        },
+        {
+          "info": {
+            "name": "Get multiple Bluesky profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.getProfiles",
+            "params": [
+              {
+                "name": "actors",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get multiple Bluesky profiles"
+        },
+        {
+          "info": {
+            "name": "Search for actors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/app.bsky.actor.searchActors",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search for actors"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

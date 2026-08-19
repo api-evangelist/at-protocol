@@ -1,0 +1,256 @@
+{
+  "item": [
+    {
+      "id": "78aae566-53b9-4cf2-9397-104b7be519fb",
+      "name": "Actor",
+      "description": {
+        "content": "Bluesky actor profiles (app.bsky.actor.*)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "69aa85fd-1934-47d1-b436-9379e48d7771",
+          "name": "Get a Bluesky profile",
+          "request": {
+            "name": "Get a Bluesky profile",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.actor.getProfile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "actor",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "622d5c96-15c9-44fe-b10c-de8e599f0270",
+              "name": "Profile view",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.actor.getProfile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "actor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbf77b55-aa7b-4185-b10b-d78465b363d9",
+          "name": "Get multiple Bluesky profiles",
+          "request": {
+            "name": "Get multiple Bluesky profiles",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.actor.getProfiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "actors",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "551cf0ae-a030-4d2a-bc2c-77034ad38f9e",
+              "name": "Profile views",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.actor.getProfiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "actors",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a91fc2a-3436-4580-b280-d1a72296f6f9",
+          "name": "Search for actors",
+          "request": {
+            "name": "Search for actors",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.actor.searchActors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a21c40bd-e1da-48e8-92e9-e3cef3121b65",
+              "name": "Search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.actor.searchActors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://bsky.social",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f7d6c413-a429-4ed0-a43f-ec6de9be8348",
+    "name": "AT Protocol XRPC Actor API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "XRPC is the AT Protocol's HTTP-based RPC layer. All protocol interactions\nare exposed as XRPC methods identified by an NSID and reached at\n`/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.\nBluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted\nmethods are reached at the user's PDS host (e.g. `https://bsky.social`).\n\n\nContact Support:\n Name: AT Protocol",
+      "type": "text/plain"
+    }
+  }
+}

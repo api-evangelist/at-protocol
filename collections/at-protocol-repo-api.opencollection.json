@@ -1,0 +1,123 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AT Protocol XRPC Actor Repo API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Repo",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new record in a repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.createRecord",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new record in a repository"
+        },
+        {
+          "info": {
+            "name": "Get a specific record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.getRecord",
+            "params": [
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "collection",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "rkey",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a specific record"
+        },
+        {
+          "info": {
+            "name": "List records in a collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.listRecords",
+            "params": [
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "collection",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "reverse",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List records in a collection"
+        },
+        {
+          "info": {
+            "name": "Upload a blob to be referenced by future records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://bsky.social/xrpc/com.atproto.repo.uploadBlob",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload a blob to be referenced by future records"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

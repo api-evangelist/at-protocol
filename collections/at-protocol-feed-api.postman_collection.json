@@ -1,0 +1,406 @@
+{
+  "item": [
+    {
+      "id": "a8988bc1-71a1-4dfe-91dd-420228f1dccd",
+      "name": "Feed",
+      "description": {
+        "content": "Bluesky feeds, posts, and threads (app.bsky.feed.*)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "78163555-1c6d-43c6-8d91-377705710fb7",
+          "name": "Get the authenticated user's home feed",
+          "request": {
+            "name": "Get the authenticated user's home feed",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.feed.getTimeline"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "algorithm",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4c3e10e1-6e50-4a10-90d9-682a4bf324cf",
+              "name": "Feed view",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.feed.getTimeline"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe3e8b17-47b6-4e42-9372-6138202cb48f",
+          "name": "Get an actor's posts",
+          "request": {
+            "name": "Get an actor's posts",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.feed.getAuthorFeed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "actor",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8441eadd-dacf-4502-a289-9ace635cc89c",
+              "name": "Author feed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.feed.getAuthorFeed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "actor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "981cef83-8d16-4441-916f-47ea72ddffc4",
+          "name": "Get a post and its thread",
+          "request": {
+            "name": "Get a post and its thread",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.feed.getPostThread"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "uri",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "depth",
+                  "value": "6"
+                },
+                {
+                  "disabled": false,
+                  "key": "parentHeight",
+                  "value": "80"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4d4ec5ca-19fb-4b4a-892e-d54fcf711982",
+              "name": "Thread view",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.feed.getPostThread"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "uri",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "depth",
+                      "value": "6"
+                    },
+                    {
+                      "key": "parentHeight",
+                      "value": "80"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ef4a916-bfca-4cc3-b8ef-6c74b40c9cbc",
+          "name": "Full-text search posts",
+          "request": {
+            "name": "Full-text search posts",
+            "description": {},
+            "url": {
+              "path": [
+                "xrpc",
+                "app.bsky.feed.searchPosts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0ac9af65-dafa-4560-87c7-d4b9d8c05d65",
+              "name": "Search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "xrpc",
+                    "app.bsky.feed.searchPosts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://bsky.social",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6d1d97a7-0c88-4960-93eb-f26fafc3ba68",
+    "name": "AT Protocol XRPC Actor Feed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "XRPC is the AT Protocol's HTTP-based RPC layer. All protocol interactions\nare exposed as XRPC methods identified by an NSID and reached at\n`/xrpc/{nsid}`. Query methods use GET; procedure methods use POST.\nBluesky AppView endpoints live under `https://api.bsky.app`; PDS-hosted\nmethods are reached at the user's PDS host (e.g. `https://bsky.social`).\n\n\nContact Support:\n Name: AT Protocol",
+      "type": "text/plain"
+    }
+  }
+}
