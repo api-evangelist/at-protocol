@@ -33,6 +33,20 @@ position: Provider
 access: Public
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/at-protocol.png
 tags:
+  - At-Protocol
+  - atproto
+  - Bluesky
+  - Federation
+  - Decentralized Social
+  - Social Networking
+  - DID
+  - Lexicon
+  - XRPC
+  - PDS
+  - Relay
+  - AppView
+  - Open Protocol
+tags_raw:
   - AT Protocol
   - atproto
   - Bluesky
@@ -182,6 +196,13 @@ apis:
   humanURL: https://docs.bsky.app/
   baseURL: https://public.api.bsky.app/xrpc
   tags:
+  - AppView
+  - Bluesky
+  - Timelines
+  - Feed
+  - Graph
+  - Notification
+  tags_raw:
   - AppView
   - Bluesky
   - Timeline
