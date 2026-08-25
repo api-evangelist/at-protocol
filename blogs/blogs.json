@@ -9,10 +9,6 @@
       "method": "feed"
     },
     {
-      "source": "https://docs.bsky.app/blog/rss.xml",
-      "error": "HTTPError"
-    },
-    {
       "source": "https://docs.bsky.app/",
       "feed_url": "https://docs.bsky.app/",
       "title": "",
@@ -21,5 +17,5 @@
     }
   ],
   "post_count": 57,
-  "fetched": "2026-08-15T12:22:01Z"
+  "fetched": "2026-08-22T20:20:02Z"
 }
