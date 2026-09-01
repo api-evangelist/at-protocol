@@ -45,7 +45,7 @@ position: Provider
 access: Public
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/at-protocol.png
 tags:
-  - AT Protocol
+  - At-Protocol
   - atproto
   - Bluesky
   - Federation
