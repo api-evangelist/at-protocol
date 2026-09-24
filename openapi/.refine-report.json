@@ -19,6 +19,14 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "at-protocol-actor-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "at-protocol-feed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "at-protocol-graph-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "at-protocol-identity-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "at-protocol-repo-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "at-protocol-server-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
   "skipped": []
 }
